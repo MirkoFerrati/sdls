@@ -1,0 +1,4 @@
+[Project]
+Name=sdls
+Manager=KDevCMakeManager
+VersionControl=kdevgit
