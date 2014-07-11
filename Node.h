@@ -2,7 +2,8 @@
 #ifndef _CLASS_NODE
 #define _CLASS_NODE
 #include <kdl/frames.hpp>
-#include "LinearR3.h"
+#include "MathMisc.h"
+// #include "LinearR3.h"
 
 enum Purpose {JOINT, EFFECTOR};
 

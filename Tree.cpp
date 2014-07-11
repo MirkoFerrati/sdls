@@ -10,7 +10,7 @@ using namespace std;
 #include <GL/glu.h>
 #include <GL/glut.h>
 
-#include "LinearR3.h"
+// #include "LinearR3.h"
 #include "Tree.h"
 #include "Node.h"
 

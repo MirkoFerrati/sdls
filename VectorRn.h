@@ -33,7 +33,8 @@
 #include <math.h>
 #include <assert.h>
 #include <kdl/frames.hpp>
-#include "LinearR3.h"
+#include "MathMisc.h"
+// #include "LinearR3.h"
 
 class VectorRn {
 	friend class MatrixRmn;

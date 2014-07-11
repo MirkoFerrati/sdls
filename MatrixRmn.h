@@ -32,7 +32,7 @@
 
 #include <math.h>
 #include <assert.h>
-#include "LinearR3.h"
+// #include "LinearR3.h"
 #include "VectorRn.h"
 
 class MatrixRmn {

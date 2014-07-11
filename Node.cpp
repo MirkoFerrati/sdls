@@ -10,7 +10,7 @@
 #include <GL/glut.h>
 #include <GL/glui.h>
 
-#include "LinearR3.h"
+// #include "LinearR3.h"
 #include "MathMisc.h"
 #include "Node.h"
 #include <kdl/frames_io.hpp>
@@ -125,6 +125,8 @@ void Node::DrawNode(bool isRoot)
 	glTranslatef(r.x(), r.y(), r.z());
 	glRotatef(theta*RadiansToDegrees, v.x(), v.y(), v.z());
 }
+
+using namespace std;
 
 void Node::PrintNode()
 {

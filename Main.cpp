@@ -3,7 +3,7 @@
 #include <math.h>
 #include <assert.h>
 #include <ctype.h>
-
+#include <iostream>
 #ifdef WIN32
 #include <windows.h>
 #endif
@@ -254,7 +254,7 @@ void DrawTarget(double T)
 
 	for (int i=0; i<numTarget; i++) {
 		glPushMatrix();
-		glTranslatef(target[i].x, target[i].y, target[i].z);
+		glTranslatef(target[i].x(), target[i].y(), target[i].z());
 		glutSolidSphere(0.1, 10, 10);
 		glPopMatrix();
 	}
@@ -534,7 +534,7 @@ void MouseButton( int button, int state, int x, int y )
 		b = RIGHT;		break;
 	default:
 		b = 0;
-		cerr << "Unknown mouse button: " << button << "\n";
+		std::cerr << "Unknown mouse button: " << button << "\n";
 	}
 
 	if( state == GLUT_DOWN ) {
@@ -636,15 +636,15 @@ void Reset( void )
 void UpdateTargets( double T ) {
 	switch (WhichShape) {
 	case YSHAPE:
-		target[0].Set(2.0f+1.5*sin(6*T), -0.5+1.7f+0.2*sin(7*T), 0.3f+0.2*sin(8*T));
-		target[1].Set(-0.7f+0.4*sin(4*T), -0.5+1.3f+0.3*sin(4*T), -0.2f+0.2*sin(3*T));
+		target[0]=KDL::Vector(2.0f+1.5*sin(6*T), -0.5+1.7f+0.2*sin(7*T), 0.3f+0.2*sin(8*T));
+		target[1]=KDL::Vector(-0.7f+0.4*sin(4*T), -0.5+1.3f+0.3*sin(4*T), -0.2f+0.2*sin(3*T));
 		assert( treeY.GetNumEffector() == 2 );
 		break;
 	case DBLYSHAPE:
-		target[0].Set(2.0f+1.5*sin(3*T)*2, -0.5+1.0f+0.2*sin(7*T)*2, 0.3f+0.7*sin(5*T)*2);
-		target[1].Set(0.5f+0.4*sin(4*T)*2, -0.5+0.9f+0.3*sin(4*T)*2, -0.2f+1.0*sin(3*T)*2);
-		target[2].Set(-0.5f+0.8*sin(6*T)*2, -0.5+1.1f+0.2*sin(7*T)*2, 0.3f+0.5*sin(8*T)*2);
-		target[3].Set(-1.6f+0.8*sin(4*T)*2, -0.5+0.8f+0.3*sin(4*T)*2, -0.2f+0.3*sin(3*T)*2);
+                target[0]=KDL::Vector(2.0f+1.5*sin(3*T)*2, -0.5+1.0f+0.2*sin(7*T)*2, 0.3f+0.7*sin(5*T)*2);
+                target[1]=KDL::Vector(0.5f+0.4*sin(4*T)*2, -0.5+0.9f+0.3*sin(4*T)*2, -0.2f+1.0*sin(3*T)*2);
+                target[2]=KDL::Vector(-0.5f+0.8*sin(6*T)*2, -0.5+1.1f+0.2*sin(7*T)*2, 0.3f+0.5*sin(8*T)*2);
+                target[3]=KDL::Vector(-1.6f+0.8*sin(4*T)*2, -0.5+0.8f+0.3*sin(4*T)*2, -0.2f+0.3*sin(3*T)*2);
 		assert( treeDoubleY.GetNumEffector() == 4);
 		break;
 	}

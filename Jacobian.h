@@ -2,7 +2,7 @@
 #include "Node.h"
 #include "Tree.h"
 #include "MathMisc.h"
-#include "LinearR3.h"
+// #include "LinearR3.h"
 #include "VectorRn.h"
 #include "MatrixRmn.h"
 

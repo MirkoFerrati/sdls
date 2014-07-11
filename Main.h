@@ -88,7 +88,7 @@ void DoUpdateStep();
 #define MAX_NUM_THETA	1000
 #define MAX_NUM_EFFECT	100
 
-VectorR3 target[MAX_NUM_EFFECT];
+KDL::Vector target[MAX_NUM_EFFECT];
 
 Tree treeY;
 Jacobian *jacobY;
