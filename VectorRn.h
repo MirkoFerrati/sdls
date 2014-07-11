@@ -32,6 +32,7 @@
 
 #include <math.h>
 #include <assert.h>
+#include <vector>
 #include <kdl/frames.hpp>
 #include "MathMisc.h"
 // #include "LinearR3.h"
@@ -116,7 +117,7 @@ inline void VectorRn::SetLength( long newLength )
 	assert ( newLength>0 );
 	if ( newLength>AllocLength ) {
 		delete x;
-		AllocLength = Max( newLength, AllocLength<<1 );
+		AllocLength = std::max( newLength, AllocLength<<1 );
 		x = new double[AllocLength];
 	}
 	length = newLength;

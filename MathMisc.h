@@ -74,7 +74,7 @@ inline double ZeroValue(const double& x)
 //
 // Comparisons
 //
-
+/*
 template<class T> inline T Min ( T x, T y ) 
 {
 	return (x<y ? x : y);
@@ -84,7 +84,7 @@ template<class T> inline T Max ( T x, T y )
 {
 	return (y<x ? x : y);
 }
-
+*/
 template<class T> inline T ClampRange ( T x, T min, T max) 
 {
 	if ( x<min ) {
@@ -332,7 +332,7 @@ template<class T> inline T Square ( T x )
 {
 	return (x*x);
 }
-
+/*
 // Cube(x) returns x*x*x,  of course!
 
 template<class T> inline T Cube ( T x ) 
@@ -365,7 +365,7 @@ inline double SignedSqrt( double a, double sgn )
 
 
 // Template version of Sign function
-
+/*
 template<class T> inline int Sign( T x) 
 {
 	if ( x<0 ) {
@@ -378,6 +378,6 @@ template<class T> inline int Sign( T x)
 		return 1;
 	}
 }
-
+*/
 
 #endif		// #ifndef MATH_MISC_H

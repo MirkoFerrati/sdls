@@ -48,7 +48,7 @@ Jacobian::Jacobian(Tree* tree)
 	SetJendActive();
 
 	U.SetSize(nRow, nRow);				// The U matrix for SVD calculations
-	w .SetLength(Min(nRow, nCol));
+	w .SetLength(std::min(nRow, nCol));
 	V.SetSize(nCol, nCol);				// The V matrix for SVD calculations
 
 	dS.SetLength(nRow);			// (Target positions) - (End effector positions)
@@ -182,7 +182,7 @@ void Jacobian::CalcDeltaThetasTranspose()
 	// Also scale back to be have max angle change less than MaxAngleJtranspose
 	double maxChange = dTheta.MaxAbs();
 	double beta = MaxAngleJtranspose/maxChange;
-	dTheta *= Min(alpha, beta);
+	dTheta *= std::min(alpha, beta);
 
 }
 

@@ -191,7 +191,7 @@ inline void MatrixRmn::SetSize( long numRows, long numCols )
 	long newLength = numRows*numCols;
 	if ( newLength>AllocSize ) {
 		delete x;
-		AllocSize = Max(newLength, AllocSize<<1);
+		AllocSize = std::max(newLength, AllocSize<<1);
 		x = new double[AllocSize];
 	}
 	NumRows = numRows;
@@ -364,7 +364,7 @@ inline double MatrixRmn::FrobeniusNormSq() const
 	double* aPtr = x;
 	double result = 0.0;
 	for ( long i=NumRows*NumCols; i>0; i-- ) {
-		result += Square( *(aPtr++) );
+		result += pow( *(aPtr++),2 );
 	}
 	return result;
 }
