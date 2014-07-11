@@ -2,13 +2,17 @@
 #include "Node.h"
 #include "Tree.h"
 #include "Jacobian.h"
+#include <GL/glui.h>
 
 #ifndef _MAIN_HEADER
 #define _MAIN_HEADER
 
 #pragma comment (lib, "glui32.lib")    /* link with Win32 GLUI lib */
 
+extern const double Tstep;
 
+extern double T;
+extern int RestPositionOn;
 #define RADIAN(X)	((X)*RadiansToDegrees)
 
 const char *WINDOWTITLE = { "Kinematics -- Sam Buss and Jin-Su Kim" };
@@ -83,6 +87,8 @@ void RunTestC();
 void RunTestD();
 void UpdateTargets( double T );
 void DoUpdateStep();
+void BuildTreeYShape(Node *node[], Tree &tree);
+void BuildTreeDoubleYShape(Node *node[], Tree &tree);
 
 #define MAX_NUM_NODE	1000
 #define MAX_NUM_THETA	1000
