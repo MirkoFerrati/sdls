@@ -32,6 +32,7 @@
 
 #include <math.h>
 #include <assert.h>
+#include <kdl/frames.hpp>
 #include "LinearR3.h"
 
 class VectorRn {
@@ -65,7 +66,7 @@ public:
 	double* GetPtr() { return x; }
 
 	void Set( long i, double val ) { assert(0<=i && i<length), *(x+i) = val; }
-	void SetTriple( long i, const VectorR3& u );
+	void SetTriple( long int i, const KDL::Vector& u );
 
 	VectorRn& operator+=( const VectorRn& src );
 	VectorRn& operator-=( const VectorRn& src );
@@ -130,11 +131,14 @@ inline void VectorRn::SetZero()
 }
 
 // Set the value of the i-th triple of entries in the vector
-inline void VectorRn::SetTriple( long i, const VectorR3& u ) 
+inline void VectorRn::SetTriple( long i, const KDL::Vector& u ) 
 {
 	long j = 3*i;
 	assert ( 0<=j && j+2 < length );
-	u.Dump( x+j );
+	//u.Dump( x+j );
+        *(x+j)=u[0];
+        *(x+j+1)=u[1];
+        *(x+j+2)=u[2];
 }
 
 inline void VectorRn::Fill( double d ) 

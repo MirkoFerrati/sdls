@@ -13,13 +13,13 @@ using namespace std;
 #include <GL/glu.h>
 #include <GL/glut.h>
 #include <GL/glui.h>
-
+#include <kdl/frames.hpp>
 #include "Jacobian.h"
 
-void Arrow(const VectorR3& tail, const VectorR3& head);
+void Arrow(const KDL::Vector& tail, const KDL::Vector& head);
 
 extern int RestPositionOn;
-extern VectorR3 target[];
+extern KDL::Vector target[];
 
 // Optimal damping values have to be determined in an ad hoc manner  (Yuck!)
 // const double Jacobian::DefaultDampingLambda = 0.6;		// Optimal for the "Y" shape (any lower gives jitter)
@@ -82,12 +82,12 @@ void Jacobian::Reset()
 void Jacobian::ComputeJacobian() 
 {
 	// Traverse tree to find all end effectors
-	VectorR3 temp;
+	KDL::Vector temp;
 	Node* n = tree->GetRoot();
 	while ( n ) {	
 		if ( n->IsEffector() ) {
 			int i = n->GetEffectorNum();
-			const VectorR3& targetPos = target[i];
+			const KDL::Vector& targetPos = target[i];
 
 			// Compute the delta S value (differences from end effectors to target positions.
 			temp = targetPos;
@@ -101,17 +101,17 @@ void Jacobian::ComputeJacobian()
 				int j = m->GetJointNum();
 				assert ( 0 <=i && i<nEffector && 0<=j && j<nJoint );
 				if ( m->IsFrozen() ) {
-					Jend.SetTriple(i, j, VectorR3::Zero);
-					Jtarget.SetTriple(i, j, VectorR3::Zero);
+					Jend.SetTriple(i, j, KDL::Vector::Zero());
+					Jtarget.SetTriple(i, j, KDL::Vector::Zero());
 				}
 				else {
 					temp = m->GetS();			// joint pos.
 					temp -= n->GetS();			// -(end effector pos. - joint pos.)
-					temp *= m->GetW();			// cross product with joint rotation axis
+					temp = temp *m->GetW();			// cross product with joint rotation axis
 					Jend.SetTriple(i, j, temp);	
 					temp = m->GetS();			// joint pos.
 					temp -= targetPos;		// -(target pos. - joint pos.)
-					temp *= m->GetW();			// cross product with joint rotation axis
+					temp =temp* m->GetW();			// cross product with joint rotation axis
 					Jtarget.SetTriple(i, j, temp);	
 				}
 				m = tree->GetParent( m );
@@ -405,12 +405,12 @@ double Jacobian::UpdateErrorArray()
 	double totalError = 0.0;
 
 	// Traverse tree to find all end effectors
-	VectorR3 temp;
+	KDL::Vector temp;
 	Node* n = tree->GetRoot();
 	while ( n ) {	
 		if ( n->IsEffector() ) {
 			int i = n->GetEffectorNum();
-			const VectorR3& targetPos = target[i];
+			const KDL::Vector& targetPos = target[i];
 			temp = targetPos;
 			temp -= n->GetS();
 			double err = temp.Norm();
@@ -425,12 +425,12 @@ double Jacobian::UpdateErrorArray()
 void Jacobian::UpdatedSClampValue()
 {
 	// Traverse tree to find all end effectors
-	VectorR3 temp;
+	KDL::Vector temp;
 	Node* n = tree->GetRoot();
 	while ( n ) {	
 		if ( n->IsEffector() ) {
 			int i = n->GetEffectorNum();
-			const VectorR3& targetPos = target[i];
+			const KDL::Vector& targetPos = target[i];
 
 			// Compute the delta S value (differences from end effectors to target positions.
 			// While we are at it, also update the clamping values in dSclamp;
@@ -452,8 +452,8 @@ void Jacobian::UpdatedSClampValue()
 void Jacobian::DrawEigenVectors() const
 {
 	int i, j;
-	VectorR3 tail;
-	VectorR3 head;
+	KDL::Vector tail;
+	KDL::Vector head;
 	Node *node;
 
 	for (i=0; i<w.GetLength(); i++) {
@@ -469,8 +469,8 @@ void Jacobian::DrawEigenVectors() const
 			glColor3f(1.0f, 0.2f, 0.0f);
 			glLineWidth(2.0);
 			glBegin(GL_LINES);
-			glVertex3f(tail.x, tail.y, tail.z);
-			glVertex3f(head.x, head.y, tail.z);
+			glVertex3f(tail.x(), tail.y(), tail.z());
+			glVertex3f(head.x(), head.y(), tail.z());
 			glEnd();
 			Arrow(tail, head);
 			glLineWidth(1.0);

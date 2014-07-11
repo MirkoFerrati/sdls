@@ -35,65 +35,65 @@ int DumpCounterEnd = 1600;
 
 void BuildTreeYShape(Node *node[], Tree &tree)
 {
-	const VectorR3& unitx = VectorR3::UnitX;
-	const VectorR3& unity = VectorR3::UnitY;
-	const VectorR3& unitz = VectorR3::UnitZ;
-	const VectorR3 unit1(sqrt(14.0)/8.0, 1.0/8.0, 7.0/8.0);
-	const VectorR3& zero = VectorR3::Zero;
+	const KDL::Vector unitx(1,0,0);
+	const KDL::Vector unity(0,1,0);
+	const KDL::Vector unitz(0,0,1);
+	const KDL::Vector unit1(sqrt(14.0)/8.0, 1.0/8.0, 7.0/8.0);
+	const KDL::Vector zero = KDL::Vector::Zero();
 
-	//node[0] = new Node(VectorR3(0.0f, -0.5f, 0.0f), unit1, 0.08, JOINT, RADIAN(-180.), RADIAN(180.), RADIAN(30.));
-	node[0] = new Node(VectorR3(0.0f, -0.5f, 0.0f), unitz, 0.08, JOINT, RADIAN(-180.), RADIAN(180.), RADIAN(30.));
+	//node[0] = new Node(KDL::Vector(0.0f, -0.5f, 0.0f), unit1, 0.08, JOINT, RADIAN(-180.), RADIAN(180.), RADIAN(30.));
+	node[0] = new Node(KDL::Vector(0.0f, -0.5f, 0.0f), unitz, 0.08, JOINT, RADIAN(-180.), RADIAN(180.), RADIAN(30.));
 	tree.InsertRoot(node[0]);
 
-	node[1] = new Node(VectorR3(0.0f, 0.4f, 0.0f), unitz, 0.08, JOINT, RADIAN(-180.), RADIAN(180.), RADIAN(30.));
+	node[1] = new Node(KDL::Vector(0.0f, 0.4f, 0.0f), unitz, 0.08, JOINT, RADIAN(-180.), RADIAN(180.), RADIAN(30.));
 	tree.InsertLeftChild(node[0], node[1]);
 
-	node[2] = new Node(VectorR3(0.0f, 0.4f, 0.0f), unitz, 0.08, JOINT, RADIAN(-180.), RADIAN(180.), RADIAN(30.));
+	node[2] = new Node(KDL::Vector(0.0f, 0.4f, 0.0f), unitz, 0.08, JOINT, RADIAN(-180.), RADIAN(180.), RADIAN(30.));
 	tree.InsertRightSibling(node[1], node[2]);
 
-	node[3] = new Node(VectorR3(0.5f, 1.0f, 0.0f), unitx, 0.08, JOINT, RADIAN(-180.), RADIAN(180.), RADIAN(30.));
+	node[3] = new Node(KDL::Vector(0.5f, 1.0f, 0.0f), unitx, 0.08, JOINT, RADIAN(-180.), RADIAN(180.), RADIAN(30.));
 	tree.InsertLeftChild(node[1], node[3]);
 
-	node[4] = new Node(VectorR3(-0.5f, 1.0f, 0.0f), unitx, 0.08, JOINT, RADIAN(-180.), RADIAN(180.), RADIAN(30.));
+	node[4] = new Node(KDL::Vector(-0.5f, 1.0f, 0.0f), unitx, 0.08, JOINT, RADIAN(-180.), RADIAN(180.), RADIAN(30.));
 	tree.InsertLeftChild(node[2], node[4]);
 
-	node[5] = new Node(VectorR3(0.7f, 1.3f, 0.0f), unit1, 0.08, JOINT, RADIAN(-180.), RADIAN(180.), RADIAN(30.));
+	node[5] = new Node(KDL::Vector(0.7f, 1.3f, 0.0f), unit1, 0.08, JOINT, RADIAN(-180.), RADIAN(180.), RADIAN(30.));
 	tree.InsertLeftChild(node[3], node[5]);
 
-	node[6] = new Node(VectorR3(-0.8f, 1.5f, 0.0f), unit1, 0.08, JOINT, RADIAN(-180.), RADIAN(180.), RADIAN(30.));
+	node[6] = new Node(KDL::Vector(-0.8f, 1.5f, 0.0f), unit1, 0.08, JOINT, RADIAN(-180.), RADIAN(180.), RADIAN(30.));
 	tree.InsertLeftChild(node[4], node[6]);
 
-	node[7] = new Node(VectorR3(0.7f, 2.0f, 0.0f), zero, 0.08, EFFECTOR);
+	node[7] = new Node(KDL::Vector(0.7f, 2.0f, 0.0f), zero, 0.08, EFFECTOR);
 	tree.InsertLeftChild(node[5], node[7]);
 
-	node[8] = new Node(VectorR3(-0.8f, 1.9f, 0.0f), zero, 0.08, EFFECTOR);
+	node[8] = new Node(KDL::Vector(-0.8f, 1.9f, 0.0f), zero, 0.08, EFFECTOR);
 	tree.InsertLeftChild(node[6], node[8]);
 }
 
 void BuildTreeDoubleYShape(Node *node[], Tree &tree)
 {
-	const VectorR3& unitx = VectorR3::UnitX;
-	const VectorR3& unity = VectorR3::UnitY;
-	const VectorR3& unitz = VectorR3::UnitZ;
-	const VectorR3 unit1(sqrt(14.0)/8.0, 1.0/8.0, 7.0/8.0);
-	const VectorR3& zero = VectorR3::Zero;
-	VectorR3 p0(0.0f, -1.5f, 0.0f);
-	VectorR3 p1(0.0f, -1.0f, 0.0f);
-	VectorR3 p2(0.0f, -0.5f, 0.0f);
-	VectorR3 p3(0.5f*Root2Inv, -0.5+0.5*Root2Inv, 0.0f);
-	VectorR3 p4(0.5f*Root2Inv+0.5f*HalfRoot3, -0.5+0.5*Root2Inv+0.5f*0.5, 0.0f);
-	VectorR3 p5(0.5f*Root2Inv+1.0f*HalfRoot3, -0.5+0.5*Root2Inv+1.0f*0.5, 0.0f);
-	VectorR3 p6(0.5f*Root2Inv+1.5f*HalfRoot3, -0.5+0.5*Root2Inv+1.5f*0.5, 0.0f);
-	VectorR3 p7(0.5f*Root2Inv+0.5f*HalfRoot3, -0.5+0.5*Root2Inv+0.5f*HalfRoot3, 0.0f);
-	VectorR3 p8(0.5f*Root2Inv+1.0f*HalfRoot3, -0.5+0.5*Root2Inv+1.0f*HalfRoot3, 0.0f);
-	VectorR3 p9(0.5f*Root2Inv+1.5f*HalfRoot3, -0.5+0.5*Root2Inv+1.5f*HalfRoot3, 0.0f);
-	VectorR3 p10(-0.5f*Root2Inv, -0.5+0.5*Root2Inv, 0.0f);
-	VectorR3 p11(-0.5f*Root2Inv-0.5f*HalfRoot3, -0.5+0.5*Root2Inv+0.5f*HalfRoot3, 0.0f);
-	VectorR3 p12(-0.5f*Root2Inv-1.0f*HalfRoot3, -0.5+0.5*Root2Inv+1.0f*HalfRoot3, 0.0f);
-	VectorR3 p13(-0.5f*Root2Inv-1.5f*HalfRoot3, -0.5+0.5*Root2Inv+1.5f*HalfRoot3, 0.0f);
-	VectorR3 p14(-0.5f*Root2Inv-0.5f*HalfRoot3, -0.5+0.5*Root2Inv+0.5f*0.5, 0.0f);
-	VectorR3 p15(-0.5f*Root2Inv-1.0f*HalfRoot3, -0.5+0.5*Root2Inv+1.0f*0.5, 0.0f);
-	VectorR3 p16(-0.5f*Root2Inv-1.5f*HalfRoot3, -0.5+0.5*Root2Inv+1.5f*0.5, 0.0f);
+        const KDL::Vector unitx(1,0,0);
+        const KDL::Vector unity(0,1,0);
+        const KDL::Vector unitz(0,0,1);
+        const KDL::Vector unit1(sqrt(14.0)/8.0, 1.0/8.0, 7.0/8.0);
+	const KDL::Vector zero = KDL::Vector::Zero();
+	KDL::Vector p0(0.0f, -1.5f, 0.0f);
+	KDL::Vector p1(0.0f, -1.0f, 0.0f);
+	KDL::Vector p2(0.0f, -0.5f, 0.0f);
+	KDL::Vector p3(0.5f*Root2Inv, -0.5+0.5*Root2Inv, 0.0f);
+	KDL::Vector p4(0.5f*Root2Inv+0.5f*HalfRoot3, -0.5+0.5*Root2Inv+0.5f*0.5, 0.0f);
+	KDL::Vector p5(0.5f*Root2Inv+1.0f*HalfRoot3, -0.5+0.5*Root2Inv+1.0f*0.5, 0.0f);
+	KDL::Vector p6(0.5f*Root2Inv+1.5f*HalfRoot3, -0.5+0.5*Root2Inv+1.5f*0.5, 0.0f);
+	KDL::Vector p7(0.5f*Root2Inv+0.5f*HalfRoot3, -0.5+0.5*Root2Inv+0.5f*HalfRoot3, 0.0f);
+	KDL::Vector p8(0.5f*Root2Inv+1.0f*HalfRoot3, -0.5+0.5*Root2Inv+1.0f*HalfRoot3, 0.0f);
+	KDL::Vector p9(0.5f*Root2Inv+1.5f*HalfRoot3, -0.5+0.5*Root2Inv+1.5f*HalfRoot3, 0.0f);
+	KDL::Vector p10(-0.5f*Root2Inv, -0.5+0.5*Root2Inv, 0.0f);
+	KDL::Vector p11(-0.5f*Root2Inv-0.5f*HalfRoot3, -0.5+0.5*Root2Inv+0.5f*HalfRoot3, 0.0f);
+	KDL::Vector p12(-0.5f*Root2Inv-1.0f*HalfRoot3, -0.5+0.5*Root2Inv+1.0f*HalfRoot3, 0.0f);
+	KDL::Vector p13(-0.5f*Root2Inv-1.5f*HalfRoot3, -0.5+0.5*Root2Inv+1.5f*HalfRoot3, 0.0f);
+	KDL::Vector p14(-0.5f*Root2Inv-0.5f*HalfRoot3, -0.5+0.5*Root2Inv+0.5f*0.5, 0.0f);
+	KDL::Vector p15(-0.5f*Root2Inv-1.0f*HalfRoot3, -0.5+0.5*Root2Inv+1.0f*0.5, 0.0f);
+	KDL::Vector p16(-0.5f*Root2Inv-1.5f*HalfRoot3, -0.5+0.5*Root2Inv+1.5f*0.5, 0.0f);
 
 	node[0] = new Node(p0, unit1, 0.08, JOINT, RADIAN(-180.), RADIAN(180.), RADIAN(30.));
 	tree.InsertRoot(node[0]);

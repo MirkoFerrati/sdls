@@ -49,7 +49,7 @@ public:
 
 	// Return entry in row i and column j.
 	double Get( long i, long j ) const;
-	void GetTriple( long i, long j, VectorR3 *retValue ) const;
+	void GetTriple( long int i, long int j, KDL::Vector* retValue ) const;
 
 	// Use GetPtr to get pointer into the array (efficient)
 	// Is friendly in that anyone can change the array contents (be careful!)
@@ -68,7 +68,7 @@ public:
 	long GetColStride() const { return 1; }				// Step size (stide) along a column
 
 	void Set( long i, long j, double val );
-	void SetTriple( long i, long c, const VectorR3& u );
+	void SetTriple( long int i, long int j, const KDL::Vector& u );
 
 	void SetIdentity();
 	void SetDiagonalEntries( double d );
@@ -214,11 +214,14 @@ inline double MatrixRmn::Get( long i, long j ) const {
 }
 
 // Return a VectorR3 out of a column.  Starts at row 3*i, in column j.
-inline void MatrixRmn::GetTriple( long i, long j, VectorR3 *retValue ) const
+inline void MatrixRmn::GetTriple( long i, long j, KDL::Vector *retValue ) const
 {
 	long ii = 3*i;
 	assert ( 0<=i && ii+2<NumRows && 0<=j && j<NumCols );
-	retValue->Load( x+j*NumRows + ii );
+        retValue->data[0]=*(x+j*NumRows + ii);
+        retValue->data[1]=*(x+j*NumRows + ii+1);
+        retValue->data[2]=*(x+j*NumRows + ii+2);
+        //retValue->Load( x+j*NumRows + ii );
 }
 
 // Get a pointer to the (0,0) entry.
@@ -296,11 +299,14 @@ inline void MatrixRmn::Set( long i, long j, double val )
 }
 
 // Set the i-th triple in the j-th column to u's three values
-inline void MatrixRmn::SetTriple( long i, long j, const VectorR3& u ) 
+inline void MatrixRmn::SetTriple( long i, long j, const KDL::Vector& u ) 
 {
 	long ii = 3*i;
 	assert ( 0<=i && ii+2<NumRows && 0<=j && j<NumCols );
-	u.Dump( x+j*NumRows + ii );
+        *(x+j*NumRows + ii)=u[0];
+        *(x+j*NumRows + ii+1)=u[1];
+        *(x+j*NumRows + ii+2)=u[2];
+// 	u.Dump( x+j*NumRows + ii );
 }
 
 // Set to be equal to the identity matrix

@@ -124,7 +124,7 @@ Node* Tree::GetEffector(int index)
 }
 
 // Returns the global position of the effector.
-const VectorR3& Tree::GetEffectorPosition(int index)
+const KDL::Vector& Tree::GetEffectorPosition(int index)
 {
 	Node* effector = GetEffector(index);
 	assert(effector);

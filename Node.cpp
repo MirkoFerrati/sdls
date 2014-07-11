@@ -13,10 +13,10 @@
 #include "LinearR3.h"
 #include "MathMisc.h"
 #include "Node.h"
-
+#include <kdl/frames_io.hpp>
 extern int RotAxesOn;
 
-Node::Node(const VectorR3& attach, const VectorR3& v, double size, Purpose purpose, double minTheta, double maxTheta, double restAngle)
+Node::Node(const KDL::Vector& attach, const KDL::Vector& v, double size, Purpose purpose, double minTheta, double maxTheta, double restAngle)
 {
 	Node::freezed = false;
 	Node::size = size;
@@ -24,7 +24,7 @@ Node::Node(const VectorR3& attach, const VectorR3& v, double size, Purpose purpo
 	seqNumJoint = -1;
 	seqNumEffector = -1;
 	Node::attach = attach;		// Global attachment point when joints are at zero angle
-	r.Set(0.0, 0.0, 0.0);		// r will be updated when this node is inserted into tree
+	SetToZero(r);		// r will be updated when this node is inserted into tree
 	Node::v = v;				// Rotation axis when joints at zero angles
 	theta = 0.0;
 	Node::minTheta = minTheta;
@@ -40,7 +40,8 @@ void Node::ComputeS(void)
 	Node* w = this;
 	s = r;							// Initialize to local (relative) position
 	while ( y ) {
-		s.Rotate( y->theta, y->v );
+                s=KDL::Rotation::Rot2(y->v, y->theta)*s;
+                //s.Rotate( y->theta, y->v );
 		y = y->realparent;
 		w = w->realparent;
 		s += w->r;
@@ -53,7 +54,8 @@ void Node::ComputeW(void)
 	Node* y = this->realparent;
 	w = v;							// Initialize to local rotation axis
 	while (y) {
-		w.Rotate(y->theta, y->v);
+                w=KDL::Rotation::Rot2(y->v, y->theta)*w;
+		//w.Rotate(y->theta, y->v);
 		y = y->realparent;
 	}
 }
@@ -78,13 +80,13 @@ void Node::DrawBox() const
 		}
 	} */
 	
-	if ( r.z!=0.0 || r.x!=0.0 ) {
-		double alpha = atan2(r.z, r.x);
+	if ( r.z()!=0.0 || r.x()!=0.0 ) {
+		double alpha = atan2(r.z(), r.x());
 		glRotatef(alpha*RadiansToDegrees, 0.0f, -1.0f, 0.0f);
 	}
 
-	if ( r.y!=0.0 ) {
-		double beta = atan2(r.y, sqrt(r.x*r.x+r.z*r.z));
+	if ( r.y()!=0.0 ) {
+		double beta = atan2(r.y(), sqrt(r.x()*r.x()+r.z()*r.z()));
 		glRotatef( beta*RadiansToDegrees, 0.0f, 0.0f, 1.0f );
 	}
 
@@ -109,17 +111,19 @@ void Node::DrawNode(bool isRoot)
 		glColor3f(1.0f, 1.0f, 0.0f);
 		glLineWidth(2.0);
 		glBegin(GL_LINES);
-		VectorR3 temp = r;
-		temp.AddScaled(v,rotAxisLen*size);
-		glVertex3f( temp.x, temp.y, temp.z );
-		temp.AddScaled(v,-2.0*rotAxisLen*size);
-		glVertex3f( temp.x, temp.y, temp.z );
+		KDL::Vector temp = r;
+                temp+=v*(rotAxisLen*size);
+		//temp.AddScaled(v,rotAxisLen*size);
+		glVertex3f( temp.x(), temp.y(), temp.z() );
+                temp+=v*(-2.0*rotAxisLen*size);
+                //temp.AddScaled(v,-2.0*rotAxisLen*size);
+		glVertex3f( temp.x(), temp.y(), temp.z() );
 		glEnd();
 		glLineWidth(1.0);
 		glEnable(GL_LIGHTING);
 	}
-	glTranslatef(r.x, r.y, r.z);
-	glRotatef(theta*RadiansToDegrees, v.x, v.y, v.z);
+	glTranslatef(r.x(), r.y(), r.z());
+	glRotatef(theta*RadiansToDegrees, v.x(), v.y(), v.z());
 }
 
 void Node::PrintNode()

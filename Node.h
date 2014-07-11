@@ -1,31 +1,30 @@
 
 #ifndef _CLASS_NODE
 #define _CLASS_NODE
-
+#include <kdl/frames.hpp>
 #include "LinearR3.h"
 
 enum Purpose {JOINT, EFFECTOR};
 
-class VectorR3;
 
 class Node {
 
 	friend class Tree;
 
 public:
-	Node(const VectorR3&, const VectorR3&, double, Purpose, double minTheta=-PI, double maxTheta=PI, double restAngle=0.);
+	Node(const KDL::Vector&, const KDL::Vector&, double, Purpose, double minTheta=-PI, double maxTheta=PI, double restAngle=0.);
 
 	void DrawNode(bool);
 	void PrintNode();
 	void InitNode();
 
-	const VectorR3& GetAttach() const { return attach; }
+	const KDL::Vector& GetAttach() const { return attach; }
 
 	double GetTheta() const { return theta; }
 	double AddToTheta( double delta ) { theta += delta; return theta; }
 
-	const VectorR3& GetS() const { return s; }
-	const VectorR3& GetW() const { return w; }
+	const KDL::Vector& GetS() const { return s; }
+	const KDL::Vector& GetW() const { return w; }
 
 	double GetMinTheta() const { return minTheta; }
 	double GetMaxTheta() const { return maxTheta; } 
@@ -49,15 +48,15 @@ private:
 	int seqNumEffector;		// sequence number if this node is an effector
 	double size;			// size
 	Purpose purpose;		// joint / effector / both
-	VectorR3 attach;		// attachment point
-	VectorR3 r;				// relative position vector
-	VectorR3 v;				// rotation axis
+	KDL::Vector attach;		// attachment point
+	KDL::Vector r;				// relative position vector
+	KDL::Vector v;				// rotation axis
 	double theta;			// joint angle (radian)
 	double minTheta;		// lower limit of joint angle
 	double maxTheta;		// upper limit of joint angle
 	double restAngle;		// rest position angle
-	VectorR3 s;				// GLobal Position
-	VectorR3 w;				// Global rotation axis
+	KDL::Vector s;				// GLobal Position
+	KDL::Vector w;				// Global rotation axis
 	Node* left;				// left child
 	Node* right;			// right sibling
 	Node* realparent;		// pointer to real parent

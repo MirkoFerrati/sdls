@@ -9,6 +9,7 @@
 #include <GL/glu.h>
 #include <GL/glut.h>
 #include <GL/glui.h>
+#include <kdl/frames.hpp>
 
 /****************************************************************
 							 Axes 
@@ -150,18 +151,24 @@ static float azz[3] = { 0., 0., 1. };
 
 /* function declarations:						*/
 void	Arrow( float tail[3], float head[3] );
-void	Arrow( const VectorR3& tail, const VectorR3& head );
+void	Arrow( const KDL::Vector& tail, const KDL::Vector& head );
 void	cross( float [3], float [3], float [3] );
 float	dot( float [3], float [3] );
 float	unit( float [3], float [3] );
 
 
-void	Arrow( const VectorR3& tail, const VectorR3& head )
+void	Arrow( const KDL::Vector& tail, const KDL::Vector& head )
 {
 	float t[3];
 	float h[3];
-	tail.Dump( t );
-	head.Dump( h );
+        t[0]=(float)tail.data[0];
+        t[1]=(float)tail.data[1];
+        t[2]=(float)tail.data[2];
+        h[0]=(float)head.data[0];
+        h[1]=(float)head.data[1];
+        h[2]=(float)head.data[2];
+// 	tail.Dump( t );
+// 	head.Dump( h );
 	Arrow( t, h );
 } 
 

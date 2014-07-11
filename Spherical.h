@@ -41,6 +41,7 @@
 #include "LinearR3.h"
 #include "LinearR4.h"
 #include "MathMisc.h"
+#include <kdl/frames.hpp>
 
 class SphericalInterpolator;		// Spherical linear interpolation of vectors
 class SphericalBSpInterpolator;	// Spherical Bspline interpolation of vector
@@ -56,14 +57,14 @@ class EulerAnglesR3;		// Euler Angles
 class SphericalInterpolator {
 
 private:
-	VectorR3 startDir, endDir;	// Unit vectors (starting and ending)
+	KDL::Vector startDir, endDir;	// Unit vectors (starting and ending)
 	double startLen, endLen;	// Magnitudes of the vectors
 	double rotRate;				// Angle between start and end vectors
 
 public:
-	SphericalInterpolator( const VectorR3& u, const VectorR3& v );
+	SphericalInterpolator( const KDL::Vector& u, const KDL::Vector& v );
 
-	VectorR3 InterValue ( double frac ) const;
+	KDL::Vector InterValue ( double frac ) const;
 };
 
 
@@ -84,7 +85,7 @@ public:
 	inline Quaternion& Set( const VectorR4& );
 	Quaternion& Set( const EulerAnglesR3& );
 	Quaternion& Set( const RotationMapR3& );
-	Quaternion& SetRotate( const VectorR3& );
+	Quaternion& SetRotate( const KDL::Vector& );
 
 	Quaternion& SetIdentity();		// Set to the identity map
 	Quaternion  Inverse() const;	// Return the Inverse
@@ -124,12 +125,12 @@ inline double Quaternion::Angle ()
 //	Three unit vectors u,v,w specify the geodesics u-v and v-w which
 //  meet at vertex uv.  The angle from v-w to v-u is returned.  This
 //  is always in the range [0, 2PI).
-double SphereAngle( const VectorR3& u, const VectorR3& v, const VectorR3& w );
+double SphereAngle( const KDL::Vector& u, const KDL::Vector& v, const KDL::Vector& w );
 
 //  Compute the area of a triangle on the unit sphere.  Three unit vectors
 //		specify the corners of the triangle in COUNTERCLOCKWISE order.
 inline double SphericalTriangleArea( 
-						const VectorR3& u, const VectorR3& v, const VectorR3& w )
+						const KDL::Vector& u, const KDL::Vector& v, const KDL::Vector& w )
 {
 	double AngleA = SphereAngle( u,v,w );
 	double AngleB = SphereAngle( v,w,u );
@@ -143,15 +144,15 @@ inline double SphericalTriangleArea(
 // ****************************************************************
 
 // Weighted sum of vectors
-VectorR3 WeightedSum( long Num, const VectorR3 vv[], const double weights[] );
+KDL::Vector WeightedSum( long Num, const KDL::Vector vv[], const double weights[] );
 VectorR4 WeightedSum( long Num, const VectorR4 vv[], const double weights[] );
 
 // Weighted average of vectors on the sphere.  
 //		Sum of weights should equal one (but no checking is done)
-VectorR3 ComputeMeanSphere( long Num, const VectorR3 vv[], const double weights[],
+KDL::Vector ComputeMeanSphere( long Num, const KDL::Vector vv[], const double weights[],
 						  double tolerance = 1.0e-15, double bkuptolerance = 1.0e-13 );
-VectorR3 ComputeMeanSphere( long Num, const VectorR3 vv[], const double weights[],
-						  const VectorR3& InitialVec,
+KDL::Vector ComputeMeanSphere( long Num, const KDL::Vector vv[], const double weights[],
+						  const KDL::Vector& InitialVec,
 						  double tolerance = 1.0e-15, double bkuptolerance = 1.0e-13 );
 VectorR4 ComputeMeanSphere( long Num, const VectorR4 vv[], const double weights[],
 						  double tolerance = 1.0e-15, double bkuptolerance = 1.0e-13 );
@@ -168,11 +169,11 @@ const int SPHERICAL_NOTQUAT=0;
 const int SPHERICAL_QUAT=1;
 
 // Slow version, mostly for testing
-VectorR3 ComputeMeanSphereSlow( long Num, const VectorR3 vv[], const double weights[],
+KDL::Vector ComputeMeanSphereSlow( long Num, const KDL::Vector vv[], const double weights[],
 							double tolerance = 1.0e-16, double bkuptolerance = 5.0e-16 );
 VectorR4 ComputeMeanSphereSlow( long Num, const VectorR4 vv[], const double weights[],
 							double tolerance = 1.0e-16, double bkuptolerance = 5.0e-16 );
-VectorR3 ComputeMeanSphereOld( long Num, const VectorR3 vv[], const double weights[],
+KDL::Vector ComputeMeanSphereOld( long Num, const KDL::Vector vv[], const double weights[],
 						  double tolerance = 1.0e-15, double bkuptolerance = 1.0e-13 );
 VectorR4 ComputeMeanSphereOld( long Num, const VectorR4 vv[], const double weights[],
 						   const VectorR4& InitialVec, int QuatFlag,
@@ -181,8 +182,8 @@ VectorR4 ComputeMeanSphereOld( long Num, const VectorR4 vv[], const double weigh
 // Solves a system of spherical-mean equalities, where the system is
 // given as a tridiagonal matrix.
 void SolveTriDiagSphere ( int numPoints, 
-						   const double* tridiagvalues, const VectorR3* c,
-						   VectorR3* p, 
+						   const double* tridiagvalues, const KDL::Vector* c,
+						   KDL::Vector* p, 
 						   double accuracy=1.0e-15, double bkupaccuracy=1.0e-13 );
 void SolveTriDiagSphere ( int numPoints, 
 						   const double* tridiagvalues, const VectorR4* c,
@@ -193,8 +194,8 @@ void SolveTriDiagSphere ( int numPoints,
 //		convergence.  The base version uses a Newton iteration with a quadratic
 //		rate of convergence.
 void SolveTriDiagSphereSlow ( int numPoints, 
-						   const double* tridiagvalues, const VectorR3* c,
-						   VectorR3* p, 
+						   const double* tridiagvalues, const KDL::Vector* c,
+						   KDL::Vector* p, 
 						   double accuracy=1.0e-15, double bkupaccuracy=5.0e-15 );
 void SolveTriDiagSphereSlow ( int numPoints, 
 						   const double* tridiagvalues, const VectorR4* c,
@@ -204,13 +205,13 @@ void SolveTriDiagSphereSlow ( int numPoints,
 // The "Unstable" version probably shouldn't be used except for very short sequences
 //		of knots.  Mostly it's used for testing purposes now.
 void SolveTriDiagSphereUnstable ( int numPoints, 
-						   const double* tridiagvalues, const VectorR3* c,
-						   VectorR3* p, 
+						   const double* tridiagvalues, const KDL::Vector* c,
+						   KDL::Vector* p, 
 						   double accuracy=1.0e-15, double bkupaccuracy=1.0e-13 );
 void SolveTriDiagSphereHelperUnstable ( int numPoints, 
-								const double* tridiagvalues, const VectorR3 *c,
-								const VectorR3& p0value,
-								VectorR3 *p, 
+								const double* tridiagvalues, const KDL::Vector *c,
+								const KDL::Vector& p0value,
+								KDL::Vector *p, 
 								double accuracy=1.0e-15, double bkupaccuracy=1.0e-13 );
 
 

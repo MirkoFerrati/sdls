@@ -1,6 +1,7 @@
 
 #include "LinearR3.h"
 #include "Node.h"
+#include <kdl/frames.hpp>
 
 #ifndef _CLASS_TREE
 #define _CLASS_TREE
@@ -20,7 +21,7 @@ public:
 	// Accessors based on node numbers
 	Node* GetJoint(int);
 	Node* GetEffector(int);
-	const VectorR3& GetEffectorPosition(int);
+	const KDL::Vector& GetEffectorPosition(int index);
 
 	// Accessors for tree traversal
 	Node* GetRoot() const { return root; }
